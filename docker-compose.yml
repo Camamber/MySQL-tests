@@ -2,21 +2,43 @@ version: '3.1'
 
 services:
 
+### MariaDB ##############################################
   mariadb:
-    image: mariadb
-    restart: always
+    build:
+      context: ./mariadb
+      args:
+        - http_proxy
+        - https_proxy
+        - no_proxy
     volumes:
-      - ./mariadb/config:/etc/mysql/conf.d
+      - ${DATA_PATH_HOST}/mariadb:/var/lib/mysql
+      - ${MARIADB_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+    ports:
+      - "${MARIADB_PORT}:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MARIADB_DATABASE}
       - MYSQL_USER=${MARIADB_USER}
       - MYSQL_PASSWORD=${MARIADB_PASSWORD}
-    ports:
-      - "${MARIADB_PORT}:3306"
+      - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
 
+### Percona ################################################
+  percona:
+    build:
+      context: ./percona
+    environment:
+      - MYSQL_DATABASE=${PERCONA_DATABASE}
+      - MYSQL_USER=${PERCONA_USER}
+      - MYSQL_PASSWORD=${PERCONA_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${PERCONA_ROOT_PASSWORD}
+    volumes:
+      - ${DATA_PATH_HOST}/percona:/var/lib/mysql
+      - ${PERCONA_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+    ports:
+      - "${PERCONA_PORT}:3306"
+
+### Adminer ###########################################
   adminer:
-    image: adminer
+    image: adminer:latest
     restart: always
     ports:
-      - "8080:8080"
+      - "${ADMINER_PORT}:8080"
