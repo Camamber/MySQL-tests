@@ -68,7 +68,7 @@ services:
     ports:
       - "${GRAFANA_PORT}:3000"
     depends_on:
-      - "mysql_exporter"
+      - "prometheus"
 
 ### NetData ################################################
   netdata:
