@@ -2,8 +2,6 @@ FROM mariadb:latest
 
 LABEL maintainer="Camamber"
 
-COPY my.cnf /etc/mysql/conf.d/my.cnf
-
 RUN apt-get update
 RUN apt-get install -y wget
 RUN wget https://repo.percona.com/apt/percona-release_latest.generic_all.deb
@@ -17,6 +15,8 @@ RUN apt-get install pmm-client
 #RUN pmm-admin add linux:metrics
 #RUN pmm-admin add mysql:metrics --host mariadb --user pmm --password expo213
 #RUN pmm-admin add mysql:queries --host mariadb --user pmm --password expo213
+
+COPY my.cnf /etc/mysql/conf.d/my.cnf
 
 CMD ["mysqld"]
 
