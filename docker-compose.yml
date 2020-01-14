@@ -42,3 +42,41 @@ services:
     restart: always
     ports:
       - "${ADMINER_PORT}:8080"
+
+### MySQL exporter ################################################# 
+  mysql_exporter:
+    image: prom/mysqld-exporter
+    ports:
+      - "9104:9104"    
+    environment:
+      - DATA_SOURCE_NAME=${MYSQL_EXPORTER_USER}:${MYSQL_EXPORTER_PASSWORD}@(mariadb:3306)/
+
+
+### Prometheus ################################################# 
+  prometheus:
+    image: grafana/grafana
+    ports:
+      - "${GRAFANA_PORT}:3000"
+    depends_on:
+      - "prometheus"
+
+### Grafana ################################################# 
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "${GRAFANA_PORT}:3000"
+    depends_on:
+      - "mysql_exporter"
+
+### NetData ################################################
+  netdata:
+    image: titpetric/netdata:latest
+    cap_add:
+      - SYS_PTRACE
+    volumes:
+      - /:/host:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - DOCKER_USR=root
+    ports:
+      - "${NETDATA_PORT}:19999"
