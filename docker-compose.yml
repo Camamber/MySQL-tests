@@ -49,33 +49,6 @@ services:
     ports:
       - "${ADMINER_PORT}:8080"
 
-### MySQL exporter ################################################# 
-  mysql_exporter:
-    image: prom/mysqld-exporter
-    ports:
-      - "9104:9104"    
-    environment:
-      - DATA_SOURCE_NAME=${MYSQL_EXPORTER_USER}:${MYSQL_EXPORTER_PASSWORD}@(mariadb:3306)/
-
-
-### Prometheus ################################################# 
-  prometheus:
-    image: prom/prometheus
-    volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
-    depends_on:
-      - "mysql_exporter"
-
-### Grafana ################################################# 
-  grafana:
-    image: grafana/grafana
-    ports:
-      - "${GRAFANA_PORT}:3000"
-    depends_on:
-      - "mysql_exporter"
-
 ### NetData ################################################
   netdata:
     image: titpetric/netdata:latest
@@ -89,7 +62,7 @@ services:
     ports:
       - "${NETDATA_PORT}:19999"
 
-
+### PMM Data ################################################
   pmm-data:   
     image: percona/pmm-server
     command: /bin/true
@@ -99,6 +72,7 @@ services:
       - pmm-mysql:/var/lib/mysql
       - pmm-grafana:/var/lib/grafana
 
+### PMM Server ################################################
   pmm-server:   
     image: percona/pmm-server
     volumes:
