@@ -1,5 +1,11 @@
 version: '3.1'
 
+volumes:
+  prometheus-data:
+  pmm-consul_data:
+  pmm-mysql:
+  pmm-grafana:
+
 services:
 
 ### MariaDB ##############################################
@@ -84,12 +90,23 @@ services:
       - "${NETDATA_PORT}:19999"
 
 
-  pmm_server:   
+  pmm-data:   
+    image: percona/pmm-server
+    command: /bin/true
+    volumes:
+      - prometheus-data:/opt/prometheus/data
+      - pmm-consul_data:/opt/consul-data
+      - pmm-mysql:/var/lib/mysql
+      - pmm-grafana:/var/lib/grafana
+
+  pmm-server:   
     image: percona/pmm-server
     volumes:
-      - ${DATA_PATH_HOST}/pmm-server/data:/opt/prometheus/data
-      - ${DATA_PATH_HOST}/pmm-server/consul-data:/opt/consul-data
-      - ${DATA_PATH_HOST}/pmm-server/mysql:/var/lib/mysql
-      - ${DATA_PATH_HOST}/pmm-server/grafana:/var/lib/grafana
+      - prometheus-data:/opt/prometheus/data
+      - pmm-consul_data:/opt/consul-data
+      - pmm-mysql:/var/lib/mysql
+      - pmm-grafana:/var/lib/grafana
     ports:
-      - "8081:8081"
+      - "80:80"
+    depends_on:
+      - "pmm-data"

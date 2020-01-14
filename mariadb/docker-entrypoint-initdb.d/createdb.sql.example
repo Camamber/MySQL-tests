@@ -16,14 +16,9 @@
 ###     mysql -u root -p < /docker-entrypoint-initdb.d/createdb.sql
 ###
 
-CREATE USER pmm@'172.16.0.0/255.240.0.0' IDENTIFIED BY 'expo213';
-GRANT SELECT, PROCESS, SUPER, REPLICATION CLIENT, RELOAD
-    ON *.*
-    TO pmm@'172.16.0.0/255.240.0.0';
-GRANT SELECT, UPDATE, DELETE, DROP
-    ON performance_schema.*
-    TO pmm@'172.16.0.0/255.240.0.0';
-
+CREATE USER pmm@'%' IDENTIFIED BY 'expo213';
+GRANT SELECT, PROCESS, SUPER, REPLICATION CLIENT, RELOAD ON *.* TO pmm@'%';
+GRANT SELECT, UPDATE, DELETE, DROP ON performance_schema.* TO pmm@'%';
 
 #CREATE USER 'exporter'@'172.16.0.0/255.240.0.0' IDENTIFIED BY 'expo213' WITH MAX_USER_CONNECTIONS 3;
 #GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'172.16.0.0/255.240.0.0';
