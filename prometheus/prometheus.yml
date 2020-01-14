@@ -26,4 +26,4 @@ scrape_configs:
     # scheme defaults to 'http'.
 
     static_configs:
-    - targets: ['mariadb:9104']
+    - targets: ['mysql_exporter:9104']
