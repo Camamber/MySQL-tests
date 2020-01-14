@@ -54,15 +54,17 @@ services:
 
 ### Prometheus ################################################# 
   prometheus:
-    image: grafana/grafana
+    image: prom/prometheus
     ports:
-      - "${GRAFANA_PORT}:3000"
+      - "9090:9090"
     depends_on:
       - "mysql_exporter"
 
 ### Grafana ################################################# 
   grafana:
     image: grafana/grafana
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "${GRAFANA_PORT}:3000"
     depends_on:
