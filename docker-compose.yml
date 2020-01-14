@@ -82,3 +82,14 @@ services:
       - DOCKER_USR=root
     ports:
       - "${NETDATA_PORT}:19999"
+
+
+  pmm_server:   
+    image: percona/pmm-server
+    volumes:
+      - ${DATA_PATH_HOST}/pmm-server/data:/opt/prometheus/data
+      - ${DATA_PATH_HOST}/pmm-server/consul-data:/opt/consul-data
+      - ${DATA_PATH_HOST}/pmm-server/mysql:/var/lib/mysql
+      - ${DATA_PATH_HOST}/pmm-server/grafana:/var/lib/grafana
+    ports:
+      - "8081:8081"
