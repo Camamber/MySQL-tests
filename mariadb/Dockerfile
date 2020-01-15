@@ -20,8 +20,9 @@ RUN apt-get install pmm-client
 
 COPY my.cnf /etc/mysql/conf.d/my.cnf
 
-ADD ./startup.sh /opt/startup.sh
-RUN sed -i 's/\r//g' /opt/startup.sh
-CMD ["/bin/bash", "/opt/startup.sh"]
+# ADD ./startup.sh /opt/startup.sh
+# RUN sed -i 's/\r//g' /opt/startup.sh
+# CMD ["/bin/bash", "/opt/startup.sh"]
+CMD ["mysqld"]
 
 EXPOSE 3306
