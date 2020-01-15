@@ -26,6 +26,8 @@ services:
       - MYSQL_USER=${MARIADB_USER}
       - MYSQL_PASSWORD=${MARIADB_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+    depends_on:
+      - "pmm-server"
 
 ### Percona ################################################
   percona:
