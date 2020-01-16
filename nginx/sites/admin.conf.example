@@ -7,17 +7,15 @@ upstream adminer-server {
     keepalive 64;
 }
 
-upstream pmm {
-    server pmm-server:80;
-    keepalive 64;
-}
-
 
 server {
     listen 80;
     listen [::]:80 ipv6only=on;
 
     server_name 134.209.255.65;
+
+    auth_basic      "You shall not pass";
+    auth_basic_user_file /var/www/.htpasswd;
 
     location = /netdata {
         return 301 /netdata/;
@@ -27,14 +25,7 @@ server {
         return 301 /adminer/;
     }
 
-    location = /pmm {
-        return 301 /pmm/;
-    }
-
     location ~ /netdata/(?<ndpath>.*) {
-        auth_basic      "You shall not pass";
-        auth_basic_user_file /var/www/.htpasswd;
-
         proxy_redirect off;
         proxy_set_header Host $host;
 
@@ -53,15 +44,6 @@ server {
     }
 
     location /adminer/ {
-        auth_basic      "You shall not pass";
-        auth_basic_user_file /var/www/.htpasswd;
-        proxy_pass http://adminer:8080/;
-    }
-
-    location ~ /pmm/(?<pmmpath>.*) {
-        auth_basic      "You shall not pass";
-        auth_basic_user_file /var/www/.htpasswd;
-
         proxy_redirect off;
         proxy_set_header Host $host;
 
@@ -72,10 +54,6 @@ server {
         proxy_pass_request_headers on;
         proxy_set_header Connection "keep-alive";
         proxy_store off;
-        proxy_pass http://pmm/$pmmpath$is_args$args;
-
-        gzip on;
-        gzip_proxied any;
-        gzip_types *;
+        proxy_pass http://adminer-server/;
     }
 }
