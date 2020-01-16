@@ -1,6 +1,19 @@
-FROM mariadb:latest
+ARG MARIADB_VERSION=latest
+FROM mariadb:${MARIADB_VERSION}
 
 LABEL maintainer="Camamber"
+
+#####################################
+# Set Timezone
+#####################################
+
+ARG TZ=UTC
+ENV TZ ${TZ}
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && chown -R mysql:root /var/lib/mysql/
+
+#####################################
+# PMM CLIENT
+#####################################
 
 RUN apt-get update
 RUN apt-get install -y wget
@@ -10,18 +23,10 @@ RUN apt --fix-broken install -y
 RUN dpkg -i percona-release_latest.generic_all.deb
 RUN apt-get update
 RUN apt-get install pmm-client
-# RUN pmm-admin config --server pmm-server:80
-# RUN pmm-admin add linux:metrics
-# RUN pmm-admin add mysql:metrics --host mariadb --user pmm --password expo213 
-# RUN pmm-admin add mysql:queries --host mariadb --user pmm --password expo213 --query-source perfschema
-
-# pmm-admin config --server pmm-server:80 &&  pmm-admin add linux:metrics &&  pmm-admin add mysql:metrics --host mariadb --user pmm --password expo213 && pmm-admin add mysql:queries --host mariadb --user pmm --password expo213
 
 COPY my.cnf /etc/mysql/conf.d/my.cnf
+RUN chmod -R 644 /etc/mysql/conf.d/my.cnf
 
-# ADD ./startup.sh /opt/startup.sh
-# RUN sed -i 's/\r//g' /opt/startup.sh
-# CMD ["/bin/bash", "/opt/startup.sh"]
 CMD ["mysqld"]
 
 EXPOSE 3306
