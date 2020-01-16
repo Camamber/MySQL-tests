@@ -27,6 +27,7 @@ services:
       - MYSQL_USER=${MARIADB_USER}
       - MYSQL_PASSWORD=${MARIADB_PASSWORD}
       - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - TZ=${WORKSPACE_TIMEZONE}
     depends_on:
       - "pmm-server"
 
