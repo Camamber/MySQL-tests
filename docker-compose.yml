@@ -29,6 +29,12 @@ services:
       - MYSQL_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
     depends_on:
       - "pmm-server"
+    command:
+      - /bin/bash
+      - -c
+      - |
+          /etc/init.d/mysqld start
+          pmm-admin config --server pmm-server:80
 
 ### Percona ################################################
   percona:
