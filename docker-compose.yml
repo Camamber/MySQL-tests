@@ -18,6 +18,7 @@ services:
         - no_proxy
     hostname: mariadb
     volumes:
+      - ${DATA_PATH_HOST}/pmm-client:/usr/local/percona/pmm-clinet
       - ${DATA_PATH_HOST}/mariadb:/var/lib/mysql
       - ${MARIADB_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
     ports:
