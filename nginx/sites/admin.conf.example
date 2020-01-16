@@ -43,17 +43,8 @@ server {
         gzip_types *;
     }
 
-    location ~ /adminer/(?<adminerpath>.*) {
-        proxy_redirect off;
-        proxy_set_header Host $host;
-
-        proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Server $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_http_version 1.1;
-        proxy_pass_request_headers on;
-        proxy_set_header Connection "keep-alive";
-        proxy_store off;
-        proxy_pass http://adminer-server/$adminerpath$is_args$args;
+    location /adminer/ {
+        proxy_set_header X-Forwarded-Prefix "/adminer";
+        proxy_pass http://adminer-server/;
     }
 }
