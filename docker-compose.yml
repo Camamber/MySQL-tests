@@ -112,11 +112,11 @@ services:
     image: percona/pmm-server
     command: /bin/true
     volumes:
-      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
       - prometheus-data:/opt/prometheus/data
       - pmm-consul_data:/opt/consul-data
       - pmm-mysql:/var/lib/mysql
       - pmm-grafana:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
 
 ### PMM Server ################################################
   pmm-server:   
@@ -126,6 +126,7 @@ services:
       - pmm-consul_data:/opt/consul-data
       - pmm-mysql:/var/lib/mysql
       - pmm-grafana:/var/lib/grafana
+      # - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     ports:
       - "3000:80"
     depends_on:
