@@ -121,6 +121,7 @@ services:
   pmm-server:   
     image: percona/pmm-server
     volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
       - prometheus-data:/opt/prometheus/data
       - pmm-consul_data:/opt/consul-data
       - pmm-mysql:/var/lib/mysql
