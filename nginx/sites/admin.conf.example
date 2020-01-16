@@ -43,7 +43,7 @@ server {
         gzip_types *;
     }
 
-    location /adminer/ {
+    location ~ /adminer/(?<adminerpath>.*) {
         proxy_redirect off;
         proxy_set_header Host $host;
 
@@ -54,6 +54,6 @@ server {
         proxy_pass_request_headers on;
         proxy_set_header Connection "keep-alive";
         proxy_store off;
-        proxy_pass http://adminer-server/;
+        proxy_pass http://adminer-server/$adminerpath$is_args$args;
     }
 }
