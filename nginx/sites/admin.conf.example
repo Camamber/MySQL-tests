@@ -14,8 +14,8 @@ server {
 
     server_name 134.209.255.65;
 
-    auth_basic      "You shall not pass";
-    auth_basic_user_file /var/www/.htpasswd;
+    auth_basic "Protected";
+    auth_basic_user_file passwords;
 
     location = /netdata {
         return 301 /netdata/;
@@ -43,11 +43,5 @@ server {
         proxy_set_header    Host                $http_host;
         proxy_set_header    X-Real-IP           $remote_addr;
         proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
-    }
-
-    location / {
-        proxy_set_header    Authorization    "";
-        proxy_pass          http://pmm-server:80;
-        proxy_read_timeout  90s;
     }
 }

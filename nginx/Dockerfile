@@ -22,14 +22,15 @@ RUN set -x ; \
     addgroup -g 82 -S www-data ; \
     adduser -u 82 -D -S -G www-data www-data && exit 0 ; exit 1
 
-ARG PHP_UPSTREAM_CONTAINER=php-fpm
-ARG PHP_UPSTREAM_PORT=9000
-
 # Create 'messages' file used from 'logrotate'
 RUN touch /var/log/messages
 
 # Copy 'logrotate' config file
 COPY logrotate/nginx /etc/logrotate.d/
+
+ARG NGINX_AUTH_USER=admin
+ARG NGINX_AUTH_PASSWORD=admin
+RUN printf "${NGINX_AUTH_USER}:$(openssl passwd -crypt ${NGINX_AUTH_PASSWORD})\n" > /etc/nginx/passwords
 
 ADD ./startup.sh /opt/startup.sh
 RUN sed -i 's/\r//g' /opt/startup.sh
