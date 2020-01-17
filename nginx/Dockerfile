@@ -30,6 +30,7 @@ COPY logrotate/nginx /etc/logrotate.d/
 
 ARG NGINX_AUTH_USER=admin
 ARG NGINX_AUTH_PASSWORD=admin
+
 RUN printf "${NGINX_AUTH_USER}:$(openssl passwd -crypt ${NGINX_AUTH_PASSWORD})\n" > /etc/nginx/passwords
 
 ADD ./startup.sh /opt/startup.sh

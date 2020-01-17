@@ -80,11 +80,12 @@ services:
       context: ./nginx
       args:
         - CHANGE_SOURCE=${CHANGE_SOURCE}
+        - NGINX_AUTH_USER=${NGINX_AUTH_USER}
+        - NGINX_AUTH_PASSWORD=${NGINX_AUTH_PASSWORD}
         - http_proxy
         - https_proxy
         - no_proxy
     volumes:
-      - ${DATA_PATH_HOST}/nginx/.htpasswd:/var/www/.htpasswd
       - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
       - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
