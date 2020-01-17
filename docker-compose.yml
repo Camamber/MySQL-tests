@@ -53,7 +53,7 @@ services:
   mysql-backup:
     image: camamber/mysql-backup-s3
     volumes:
-      - ${DATA_PATH_HOST}/mysql/backup:/root/backup
+      - ${DATA_PATH_HOST}/backup:/root/backup
     environment:
       - MYSQLDUMP_DATABASE=${MYSQLDUMP_DATABASE}
       - MYSQL_HOST=${MYSQLDUMP_HOST}
