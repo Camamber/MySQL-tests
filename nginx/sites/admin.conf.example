@@ -4,7 +4,8 @@ upstream netdata-server {
 }
 upstream adminer-server {
     server adminer:8080;
-    keepalive 64;
+    keepalive 64;   	
+    keepalive_timeout 10m;
 }
 
 
