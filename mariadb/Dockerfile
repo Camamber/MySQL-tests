@@ -38,6 +38,7 @@ RUN echo 'pmm-admin add linux:metrics' >> monitor.sh
 RUN echo 'pmm-admin add mysql:metrics --host mariadb --user ${MYSQL_MONITOR_USER} --password ${MYSQL_MONITOR_PASSWORD}' >> monitor.sh
 RUN echo 'pmm-admin add mysql:queries --host mariadb --user ${MYSQL_MONITOR_USER} --password ${MYSQL_MONITOR_PASSWORD} --query-source perfschema' >> monitor.sh
 
+RUN chmod +x monitor.sh
 
 COPY my.cnf /etc/mysql/conf.d/my.cnf
 RUN chmod -R 644 /etc/mysql/conf.d/my.cnf
