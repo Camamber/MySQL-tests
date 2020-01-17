@@ -17,6 +17,7 @@ services:
         - https_proxy
         - no_proxy
     hostname: mariadb
+    restart: unless-stopped
     volumes:
       - ${DATA_PATH_HOST}/mariadb:/var/lib/mysql
       - ${MARIADB_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
@@ -120,6 +121,7 @@ services:
 ### PMM Server ################################################
   pmm-server:   
     image: percona/pmm-server
+    restart: unless-stopped
     volumes:
       - prometheus-data:/opt/prometheus/data
       - pmm-consul_data:/opt/consul-data
