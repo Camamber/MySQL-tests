@@ -13,6 +13,8 @@ services:
     build:
       context: ./mariadb
       args:
+        - MYSQL_MONITOR_USER=${MYSQL_MONITOR_USER}
+        - MYSQL_MONITOR_PASSWORD=${MYSQL_MONITOR_PASSWORD}
         - http_proxy
         - https_proxy
         - no_proxy
@@ -130,6 +132,6 @@ services:
       - pmm-grafana:/var/lib/grafana
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
     ports:
-      - "3000:80"
+      - "${GRAFANA_PORT}:80"
     depends_on:
       - "pmm-data"
